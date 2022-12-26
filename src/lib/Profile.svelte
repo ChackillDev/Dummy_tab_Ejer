@@ -1,18 +1,21 @@
-<script>
+<script lang="ts">
+import { Table, type TableSource } from '@skeletonlabs/skeleton';
+import { tableMapperValues } from '@skeletonlabs/skeleton';
+
+
+
 	/** @type {string} */
-	let id;
+	let id: string;
 	/** @type {string} */
-	let name;
+	let name: string;
 	/** @type {string} */
-	let lastname;
+	let lastname: string;
 	/** @type {string} */
-	let direction;
-	/** @type {string} */
-	let country;
+	let direction: string;
 
 	/** @type {any[]}
 	 */
-	let sentData = []; // Debería usar localStorage en vez de este array
+	let sentData: any[] = []; // Debería usar localStorage en vez de este array
 
 	const enviar = () => {
 		if (!id) {
@@ -23,7 +26,6 @@
 				name: name,
 				lastname: lastname,
 				direction: direction,
-        country: country
 
 			};
 			sentData = [...sentData, user];
@@ -31,6 +33,21 @@
 		}
 	};
 	$: users = sentData;
+
+	// Usos con la tabla
+
+const tableSimple: TableSource = {
+	// A list of heading labels.
+	head: ['Nombre', 'Apellido', 'Dirección'],
+	// The data visibly shown in your table body UI.
+	body: tableMapperValues(sentData, ['name', 'lastname', 'direction']),
+	// Optional: The data returned when interactive is enabled and a row is clicked.
+	meta: tableMapperValues(sentData, ['id', 'name', 'lastname', 'direction']),
+
+};
+
+
+
 </script>
 
 <div class="hidden sm:block" aria-hidden="true">
@@ -43,7 +60,7 @@
 	<div class="md:grid md:grid-cols-3 md:gap-6">
 		<div class="md:col-span-1">
 			<div class="px-4 sm:px-0">
-				<h3 class="text-lg font-medium leading-6 text-gray-900">Informaciòn Personal</h3>
+				<h3 class="text-lg font-medium leading-6 text-gray-900">Información Personal</h3>
 			</div>
 		</div>
 		<div class="mt-5 md:col-span-2 md:mt-0">
@@ -75,20 +92,6 @@
 							/>
 						</div>
 
-						<div class="col-span-6 sm:col-span-3">
-							<label for="country" class="block text-sm font-medium text-gray-700">Pais</label>
-							<select
-								id="country"
-								name="country"
-                bind:value={country}
-								autocomplete="country-name"
-								class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-							>
-								<option>Chile</option>
-
-							</select>
-						</div>
-
 						<div class="col-span-6">
 							<label for="street-address" class="block text-sm font-medium text-gray-700"
 								>Dirección</label
@@ -116,18 +119,16 @@
 		</div>
 	</div>
 </div>
-
+<Table source={tableSimple} interactive={true} />
 <div class="table-container">
-	<table class="table table-hover">
-		<thead>
+	<table class="table table-hover" >
+		<thead >
 			<tr>
 				<th>Id</th>
 				<th>Nombre</th>
 				<th>Apellido</th>
-        <th>Dirección</th>
-        <th>Pais </th>
-
-			</tr>
+        		<th>Dirección</th>
+        	</tr>
 		</thead>
 		<tbody>
 			{#each users as user, i}
@@ -135,9 +136,8 @@
 					<td>{user.id}</td>
 					<td>{user.name}</td>
 					<td>{user.lastname}</td>
-          <td>{user.direction}</td>
-          <td>{user.country}</td>
-				</tr>
+          			<td>{user.direction}</td>
+         		</tr>
 			{/each}
 		</tbody>
 	</table>
