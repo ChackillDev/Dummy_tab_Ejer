@@ -1,11 +1,5 @@
 <script lang="ts">
-import { Table, type TableSource } from '@skeletonlabs/skeleton';
-import { tableMapperValues } from '@skeletonlabs/skeleton';
 
-
-
-	/** @type {string} */
-	let id: string;
 	/** @type {string} */
 	let name: string;
 	/** @type {string} */
@@ -13,13 +7,15 @@ import { tableMapperValues } from '@skeletonlabs/skeleton';
 	/** @type {string} */
 	let direction: string;
 
+	let id: number;
+
 	/** @type {any[]}
 	 */
-	let sentData: any[] = []; // Debería usar localStorage en vez de este array
+	let people: any[] = []; // Debería usar localStorage en vez de este array
 
-	const enviar = () => {
+	/* const enviar = () => {
 		if (!id) {
-			console.log('enviar datos...', name, lastname);
+
 			const lastId = sentData.length > 0 ? sentData[sentData.length - 1].id : 0;
 			const user = {
 				id: lastId + 1,
@@ -29,23 +25,32 @@ import { tableMapperValues } from '@skeletonlabs/skeleton';
 
 			};
 			sentData = [...sentData, user];
-			console.log('user added', sentData);
+
 		}
-	};
-	$: users = sentData;
+		return sentData
+	}; */
+
+	function create() {
+		people = people.concat({ name, lastname, direction });
+		name = lastname = direction = '';
+	}
+
+	/* function update() {
+		selected.first = first;
+		selected.last = last;
+		people = people;
+	} */
+
+/* 	function remove() {
+		// Remove selected person from the source array (people), not the filtered array
+		const index = people.indexOf(selected);
+		people = [...people.slice(0, index), ...people.slice(index + 1)];
+
+		first = last = '';
+		i = Math.min(i, filteredPeople.length - 2);
+	} */
 
 	// Usos con la tabla
-
-const tableSimple: TableSource = {
-	// A list of heading labels.
-	head: ['Nombre', 'Apellido', 'Dirección'],
-	// The data visibly shown in your table body UI.
-	body: tableMapperValues(sentData, ['name', 'lastname', 'direction']),
-	// Optional: The data returned when interactive is enabled and a row is clicked.
-	meta: tableMapperValues(sentData, ['id', 'name', 'lastname', 'direction']),
-
-};
-
 
 
 </script>
@@ -110,7 +115,7 @@ const tableSimple: TableSource = {
 				<div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
 					<button
 						type="submit"
-						on:click={enviar}
+						on:click={create}
 						class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
 						>Guardar</button
 					>
@@ -119,24 +124,25 @@ const tableSimple: TableSource = {
 		</div>
 	</div>
 </div>
-<Table source={tableSimple} interactive={true} />
+
 <div class="table-container">
 	<table class="table table-hover" >
 		<thead >
 			<tr>
-				<th>Id</th>
+
 				<th>Nombre</th>
 				<th>Apellido</th>
         		<th>Dirección</th>
         	</tr>
 		</thead>
 		<tbody>
-			{#each users as user, i}
+			{#each people as user}
 				<tr>
-					<td>{user.id}</td>
+
 					<td>{user.name}</td>
 					<td>{user.lastname}</td>
           			<td>{user.direction}</td>
+
          		</tr>
 			{/each}
 		</tbody>
