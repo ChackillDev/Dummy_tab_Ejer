@@ -43,17 +43,19 @@ const dataTableStore = createDataTableStore(
 
 // This automatically handles search, sort, etc when the model updates.
 dataTableStore.subscribe((model) => dataTableHandler(model));
+// Selects all objects with a position value of 1 or 2:
+
 
 </script>
 
 
 <div class="table-container">
-	<table class="table table-hover" use:tableInteraction>
+	<table class="table table-hover" use:tableInteraction role="grid" use:tableA11y>
 
 <thead on:click={(e) => { dataTableStore.sort(e) }} on:keypress>
 	<input bind:value={$dataTableStore.search} type="search" placeholder="Buscador.." />
 	<tr>
-		<th><!-- selection --></th>
+		<th><input type="checkbox" on:click={(e) => { dataTableStore.selectAll(e.currentTarget.checked) }} /></th>
 		<th data-sort="position">Position</th>
 		<th data-sort="name">Name</th>
 		<th data-sort="symbol">Symbol</th><!-- ... --->
@@ -61,11 +63,13 @@ dataTableStore.subscribe((model) => dataTableHandler(model));
 </thead>
 <tbody>
 	{#each $dataTableStore.filtered as row, rowIndex}
-		<tr class:table-row-checked={row.dataTableChecked}>
+		<tr class:table-row-checked={row.dataTableChecked}
+			aria-rowindex={rowIndex + 1}>
+
 			<td><input type="checkbox" bind:checked={row.dataTableChecked} /></td>
-			<td>{row.position}</td>
-			<td>{row.name}</td>
-			<td>{row.symbol}</td>
+			<td role="gridcell" aria-colindex={1} tabindex="0">{row.position}</td>
+			<td role="gridcell" aria-colindex={2} tabindex="0">{row.name}</td>
+			<td role="gridcell" aria-colindex={3} tabindex="0">{row.symbol}</td>
 
 			<!-- ... --->
 		</tr>
