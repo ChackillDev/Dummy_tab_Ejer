@@ -1,150 +1,78 @@
-<script lang="ts">
+<script>
 
-	/** @type {string} */
-	let name: string;
-	/** @type {string} */
-	let lastname: string;
-	/** @type {string} */
-	let direction: string;
+import {
+	// Utilities
+	createDataTableStore,
+	dataTableHandler,
+	// Svelte Actions
+	tableInteraction,
+	tableA11y,
+	Paginator
+} from '@skeletonlabs/skeleton';
 
-	let id: number;
 
-	/** @type {any[]}
-	 */
-	let people: any[] = []; // Debería usar localStorage en vez de este array
 
-	/* const enviar = () => {
-		if (!id) {
 
-			const lastId = sentData.length > 0 ? sentData[sentData.length - 1].id : 0;
-			const user = {
-				id: lastId + 1,
-				name: name,
-				lastname: lastname,
-				direction: direction,
+const sourceData = [
+	{ position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
+	{ position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
+	{ position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
+	{ position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
+	{ position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
+	{ position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
+	{ position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
+	{ position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
+	{ position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
+	{ position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' }
+];
 
-			};
-			sentData = [...sentData, user];
 
-		}
-		return sentData
-	}; */
-
-	function create() {
-		people = people.concat({ name, lastname, direction });
-		name = lastname = direction = '';
+const dataTableStore = createDataTableStore(
+	// Pass your source data here:
+	sourceData,
+	// Provide optional settings:
+	{
+		// The current search term.
+		search: '',
+		// The current sort key.
+		sort: '',
+		// Paginator component settings.
+		pagination: { offset: 0, limit: 5, size: 0, amounts: [1, 2, 5, 10] }
 	}
+);
 
-	/* function update() {
-		selected.first = first;
-		selected.last = last;
-		people = people;
-	} */
-
-/* 	function remove() {
-		// Remove selected person from the source array (people), not the filtered array
-		const index = people.indexOf(selected);
-		people = [...people.slice(0, index), ...people.slice(index + 1)];
-
-		first = last = '';
-		i = Math.min(i, filteredPeople.length - 2);
-	} */
-
-	// Usos con la tabla
-
+// This automatically handles search, sort, etc when the model updates.
+dataTableStore.subscribe((model) => dataTableHandler(model));
 
 </script>
 
-<div class="hidden sm:block" aria-hidden="true">
-	<div class="py-5">
-		<div class="border-t border-gray-200" />
-	</div>
-</div>
-
-<div class="mt-10 sm:mt-0">
-	<div class="md:grid md:grid-cols-3 md:gap-6">
-		<div class="md:col-span-1">
-			<div class="px-4 sm:px-0">
-				<h3 class="text-lg font-medium leading-6 text-gray-900">Información Personal</h3>
-			</div>
-		</div>
-		<div class="mt-5 md:col-span-2 md:mt-0">
-			<div class="overflow-hidden shadow sm:rounded-md">
-				<div class="bg-white px-4 py-5 sm:p-6">
-					<div class="grid grid-cols-6 gap-6">
-						<div class="col-span-6 sm:col-span-3">
-							<label for="first-name" class="block text-sm font-medium text-gray-700">Nombre</label>
-							<input
-								type="text"
-								name="first-name"
-								id="first-name"
-								bind:value={name}
-								autocomplete="given-name"
-								class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-							/>
-						</div>
-
-						<div class="col-span-6 sm:col-span-3">
-							<label for="last-name" class="block text-sm font-medium text-gray-700">Apellido</label
-							>
-							<input
-								type="text"
-								name="last-name"
-								bind:value={lastname}
-								id="last-name"
-								autocomplete="family-name"
-								class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-							/>
-						</div>
-
-						<div class="col-span-6">
-							<label for="street-address" class="block text-sm font-medium text-gray-700"
-								>Dirección</label
-							>
-							<input
-								type="text"
-								name="street-address"
-								bind:value={direction}
-								id="street-address"
-								autocomplete="street-address"
-								class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-							/>
-						</div>
-					</div>
-				</div>
-				<div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
-					<button
-						type="submit"
-						on:click={create}
-						class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-						>Guardar</button
-					>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
 
 <div class="table-container">
-	<table class="table table-hover" >
-		<thead >
-			<tr>
+	<table class="table table-hover" use:tableInteraction>
 
-				<th>Nombre</th>
-				<th>Apellido</th>
-        		<th>Dirección</th>
-        	</tr>
-		</thead>
-		<tbody>
-			{#each people as user}
-				<tr>
+<thead on:click={(e) => { dataTableStore.sort(e) }} on:keypress>
+	<input bind:value={$dataTableStore.search} type="search" placeholder="Buscador.." />
+	<tr>
+		<th><!-- selection --></th>
+		<th data-sort="position">Position</th>
+		<th data-sort="name">Name</th>
+		<th data-sort="symbol">Symbol</th><!-- ... --->
+	</tr>
+</thead>
+<tbody>
+	{#each $dataTableStore.filtered as row, rowIndex}
+		<tr class:table-row-checked={row.dataTableChecked}>
+			<td><input type="checkbox" bind:checked={row.dataTableChecked} /></td>
+			<td>{row.position}</td>
+			<td>{row.name}</td>
+			<td>{row.symbol}</td>
 
-					<td>{user.name}</td>
-					<td>{user.lastname}</td>
-          			<td>{user.direction}</td>
+			<!-- ... --->
+		</tr>
 
-         		</tr>
-			{/each}
-		</tbody>
+	{/each}
+	{#if $dataTableStore.pagination}<Paginator bind:settings={$dataTableStore.pagination} />{/if}
+</tbody>
+
 	</table>
 </div>
