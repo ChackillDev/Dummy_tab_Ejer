@@ -18,6 +18,11 @@
 	<svelte:fragment slot="sidebarRight"></svelte:fragment>
 	<svelte:fragment slot="pageHeader"></svelte:fragment>
 	<!-- Router Slot -->
+	<nav>
+		<a href="/">Home</a>
+		<a href="/shop">Shop</a>
+
+	</nav>
 	<slot />
 	<!-- ---- / ---- -->
 	<svelte:fragment slot="pageFooter"></svelte:fragment>

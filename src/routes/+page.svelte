@@ -1,9 +1,5 @@
-<script>
-	import Profile from "$lib/Profile.svelte";
-
-</script>
-
 <main>
-	<Profile/>
+
+	<h2>Carga de datos  via API DummyJson</h2>
 
 </main>
