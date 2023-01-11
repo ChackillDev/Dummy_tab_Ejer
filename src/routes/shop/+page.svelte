@@ -1,6 +1,8 @@
 <script>
-export let data;
+
+	export let data;
 	const { products } = data;
+	console.log(products)
 
 	import {
 		// Utilities
@@ -31,9 +33,9 @@ export let data;
 	// This automatically handles search, sort, etc when the model updates.
 	dataTableStore.subscribe((model) => dataTableHandler(model));
 	// Selects all objects with a position value of 1 or 2:
-	</script>
+</script>
 
-
+<main>
 	<div class="table-container">
 		<table class="table table-hover" use:tableInteraction role="grid" use:tableA11y>
 
@@ -55,8 +57,8 @@ export let data;
 				aria-rowindex={rowIndex + 1}>
 
 				<td><input type="checkbox" bind:checked={row.dataTableChecked} /></td>
-				<td role="gridcell" aria-colindex={1} tabindex="0">{products.title}</td>
-				<td role="gridcell" aria-colindex={2} tabindex="0">{products.description}</td>
+				<td role="gridcell" aria-colindex={1} tabindex="0">{row.title}</td>
+				<td role="gridcell" aria-colindex={2} tabindex="0">{row.description}</td>
 
 
 				<!-- ... --->
@@ -68,3 +70,4 @@ export let data;
 
 		</table>
 	</div>
+</main>

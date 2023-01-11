@@ -2,14 +2,26 @@
 	import '@skeletonlabs/skeleton/themes/theme-crimson.css';
 	import '@skeletonlabs/skeleton/styles/all.css';
 	import '../app.postcss';
-	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
+	import { AppShell, AppBar, LightSwitch } from '@skeletonlabs/skeleton';
+
 </script>
 
 <AppShell>
 	<svelte:fragment slot="header" >
 		<AppBar >
 			<svelte:fragment slot="lead" >
-				<h1> Mantenedor de usuarios</h1>
+			<div>
+				<a href="/">Pagina Inicio</a>
+				<a href="/shop">Shop</a>
+				<a href="/movies">Peliculas</a>
+				<h2>Ejercicio Via API DummyJson</h2>
+			</div>
+			</svelte:fragment>
+			<svelte:fragment slot="trail" >
+
+
+
+				<LightSwitch />
 			</svelte:fragment>
 		</AppBar>
 
@@ -18,11 +30,7 @@
 	<svelte:fragment slot="sidebarRight"></svelte:fragment>
 	<svelte:fragment slot="pageHeader"></svelte:fragment>
 	<!-- Router Slot -->
-	<nav>
-		<a href="/">Home</a>
-		<a href="/shop">Shop</a>
 
-	</nav>
 	<slot />
 	<!-- ---- / ---- -->
 	<svelte:fragment slot="pageFooter"></svelte:fragment>
