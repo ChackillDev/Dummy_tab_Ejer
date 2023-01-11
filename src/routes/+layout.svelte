@@ -17,7 +17,7 @@ const storeTab: Writable<string> = writable('a');
 			<div>
 				<TabGroup selected={storeTab}>
 					<Tab value="a"><a href="/">Pagina Inicio</a></Tab>
-					<Tab value="b"><a href="/shop">Shop</a></Tab>
+					<Tab value="b"><a href="/shop">Compras</a></Tab>
 					<Tab value="c"><a href="/movies">Peliculas</a></Tab>
 				</TabGroup>
 				<h2>Ejercicio Via API DummyJson</h2>

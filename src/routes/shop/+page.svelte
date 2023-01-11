@@ -2,8 +2,6 @@
 
 	export let data;
 	const { products } = data;
-	console.log(products)
-
 	import {
 		// Utilities
 		createDataTableStore,
